@@ -38,12 +38,12 @@ public class Dictionary {
     private static ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 
     private Dictionary(Configuration configuration) {
-        Path configDir = configuration.getEnvironment().configFile().resolve(AnalysisHanLPPlugin.PLUGIN_NAME);
-        Predefine.HANLP_PROPERTIES_PATH = configDir.resolve(CONFIG_FILE_NAME).toString();
+        Path hanlpPluginConfigDir = configuration.getEnvironment().pluginsFile().resolve(AnalysisHanLPPlugin.PLUGIN_NAME + "/config");
+        Predefine.HANLP_PROPERTIES_PATH = hanlpPluginConfigDir.resolve(CONFIG_FILE_NAME).toString();
         logger.debug("hanlp properties path: {}", Predefine.HANLP_PROPERTIES_PATH);
         DictionaryFileCache.configCachePath(configuration);
         DictionaryFileCache.loadCache();
-        RemoteDictConfig.initial(configDir.resolve(REMOTE_CONFIG_FILE_NAME).toString());
+        RemoteDictConfig.initial(hanlpPluginConfigDir.resolve(REMOTE_CONFIG_FILE_NAME).toString());
     }
 
     public static synchronized Dictionary initial(Configuration configuration) {
